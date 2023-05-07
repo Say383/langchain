@@ -17,7 +17,7 @@ class PydanticOutputParser(BaseOutputParser[T]):
         try:
             # Greedy search for 1st json candidate.
             match = re.search(
-                "\{.*\}", text.strip(), re.MULTILINE | re.IGNORECASE | re.DOTALL
+                r"\{.*\}", text.strip(), re.MULTILINE | re.IGNORECASE | re.DOTALL
             )
             json_str = ""
             if match:
@@ -43,3 +43,7 @@ class PydanticOutputParser(BaseOutputParser[T]):
         schema_str = json.dumps(reduced_schema)
 
         return PYDANTIC_FORMAT_INSTRUCTIONS.format(schema=schema_str)
+
+    @property
+    def _type(self) -> str:
+        return "pydantic"

@@ -5,6 +5,7 @@ from typing import Any, Callable, List, Mapping, Optional
 
 from pydantic import Extra
 
+from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.self_hosted import SelfHostedPipeline
 from langchain.llms.utils import enforce_stop_tokens
 
@@ -12,7 +13,7 @@ DEFAULT_MODEL_ID = "gpt2"
 DEFAULT_TASK = "text-generation"
 VALID_TASKS = ("text2text-generation", "text-generation")
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 def _generate_text(
@@ -198,5 +199,10 @@ class SelfHostedHuggingFaceLLM(SelfHostedPipeline):
     def _llm_type(self) -> str:
         return "selfhosted_huggingface_pipeline"
 
-    def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+    def _call(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForLLMRun] = None,
+    ) -> str:
         return self.client(pipeline=self.pipeline_ref, prompt=prompt, stop=stop)

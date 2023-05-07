@@ -1,103 +1,64 @@
 """Test tool utils."""
+from typing import Any, Type
+from unittest.mock import MagicMock
+
 import pytest
 
+from langchain.agents.agent import Agent
+from langchain.agents.chat.base import ChatAgent
+from langchain.agents.conversational.base import ConversationalAgent
+from langchain.agents.conversational_chat.base import ConversationalChatAgent
+from langchain.agents.mrkl.base import ZeroShotAgent
+from langchain.agents.react.base import ReActDocstoreAgent, ReActTextWorldAgent
+from langchain.agents.self_ask_with_search.base import SelfAskWithSearchAgent
 from langchain.agents.tools import Tool, tool
 
 
-def test_unnamed_decorator() -> None:
-    """Test functionality with unnamed decorator."""
+@pytest.mark.parametrize(
+    "agent_cls",
+    [
+        ZeroShotAgent,
+        ChatAgent,
+        ConversationalChatAgent,
+        ConversationalAgent,
+        ReActDocstoreAgent,
+        ReActTextWorldAgent,
+        SelfAskWithSearchAgent,
+    ],
+)
+def test_single_input_agent_raises_error_on_structured_tool(
+    agent_cls: Type[Agent],
+) -> None:
+    """Test that older agents raise errors on older tools."""
 
     @tool
-    def search_api(query: str) -> str:
-        """Search the API for the query."""
-        return "API result"
+    def the_tool(foo: str, bar: str) -> str:
+        """Return the concat of foo and bar."""
+        return foo + bar
 
-    assert isinstance(search_api, Tool)
-    assert search_api.name == "search_api"
-    assert not search_api.return_direct
-    assert search_api("test") == "API result"
-
-
-def test_named_tool_decorator() -> None:
-    """Test functionality when arguments are provided as input to decorator."""
-
-    @tool("search")
-    def search_api(query: str) -> str:
-        """Search the API for the query."""
-        return "API result"
-
-    assert isinstance(search_api, Tool)
-    assert search_api.name == "search"
-    assert not search_api.return_direct
+    with pytest.raises(
+        ValueError,
+        match=f"{agent_cls.__name__} does not support"  # type: ignore
+        f" multi-input tool {the_tool.name}.",
+    ):
+        agent_cls.from_llm_and_tools(MagicMock(), [the_tool])  # type: ignore
 
 
-def test_named_tool_decorator_return_direct() -> None:
-    """Test functionality when arguments and return direct are provided as input."""
+def test_tool_no_args_specified_assumes_str() -> None:
+    """Older tools could assume *args and **kwargs were passed in."""
 
-    @tool("search", return_direct=True)
-    def search_api(query: str) -> str:
-        """Search the API for the query."""
-        return "API result"
+    def ambiguous_function(*args: Any, **kwargs: Any) -> str:
+        """An ambiguously defined function."""
+        return args[0]
 
-    assert isinstance(search_api, Tool)
-    assert search_api.name == "search"
-    assert search_api.return_direct
-
-
-def test_unnamed_tool_decorator_return_direct() -> None:
-    """Test functionality when only return direct is provided."""
-
-    @tool(return_direct=True)
-    def search_api(query: str) -> str:
-        """Search the API for the query."""
-        return "API result"
-
-    assert isinstance(search_api, Tool)
-    assert search_api.name == "search_api"
-    assert search_api.return_direct
-
-
-def test_missing_docstring() -> None:
-    """Test error is raised when docstring is missing."""
-    # expect to throw a value error if theres no docstring
-    with pytest.raises(AssertionError):
-
-        @tool
-        def search_api(query: str) -> str:
-            return "API result"
-
-
-def test_create_tool_posistional_args() -> None:
-    """Test that positional arguments are allowed."""
-    test_tool = Tool("test_name", lambda x: x, "test_description")
-    assert test_tool("foo") == "foo"
-    assert test_tool.name == "test_name"
-    assert test_tool.description == "test_description"
-
-
-def test_create_tool_keyword_args() -> None:
-    """Test that keyword arguments are allowed."""
-    test_tool = Tool(name="test_name", func=lambda x: x, description="test_description")
-    assert test_tool("foo") == "foo"
-    assert test_tool.name == "test_name"
-    assert test_tool.description == "test_description"
-
-
-@pytest.mark.asyncio
-async def test_create_async_tool() -> None:
-    """Test that async tools are allowed."""
-
-    async def _test_func(x: str) -> str:
-        return x
-
-    test_tool = Tool(
-        name="test_name",
-        func=lambda x: x,
-        description="test_description",
-        coroutine=_test_func,
+    some_tool = Tool(
+        name="chain_run",
+        description="Run the chain",
+        func=ambiguous_function,
     )
-    assert test_tool("foo") == "foo"
-    assert test_tool.name == "test_name"
-    assert test_tool.description == "test_description"
-    assert test_tool.coroutine is not None
-    assert await test_tool.arun("foo") == "foo"
+    expected_args = {"tool_input": {"type": "string"}}
+    assert some_tool.args == expected_args
+    assert some_tool.run("foobar") == "foobar"
+    assert some_tool.run({"tool_input": "foobar"}) == "foobar"
+    with pytest.raises(ValueError, match="Too many arguments to single-input tool"):
+        some_tool.run({"tool_input": "foobar", "other_input": "bar"})

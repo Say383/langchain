@@ -5,6 +5,7 @@ from typing import Any, List, Mapping, Optional
 
 from pydantic import Extra
 
+from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
 from langchain.llms.utils import enforce_stop_tokens
 
@@ -12,7 +13,7 @@ DEFAULT_MODEL_ID = "gpt2"
 DEFAULT_TASK = "text-generation"
 VALID_TASKS = ("text2text-generation", "text-generation")
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class HuggingFacePipeline(LLM):
@@ -146,7 +147,12 @@ class HuggingFacePipeline(LLM):
     def _llm_type(self) -> str:
         return "huggingface_pipeline"
 
-    def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+    def _call(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForLLMRun] = None,
+    ) -> str:
         response = self.pipeline(prompt)
         if self.pipeline.task == "text-generation":
             # Text generation return includes the starter text.

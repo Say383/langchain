@@ -10,16 +10,20 @@ from langchain.llms.cerebriumai import CerebriumAI
 from langchain.llms.cohere import Cohere
 from langchain.llms.deepinfra import DeepInfra
 from langchain.llms.forefrontai import ForefrontAI
+from langchain.llms.google_palm import GooglePalm
 from langchain.llms.gooseai import GooseAI
 from langchain.llms.gpt4all import GPT4All
 from langchain.llms.huggingface_endpoint import HuggingFaceEndpoint
 from langchain.llms.huggingface_hub import HuggingFaceHub
 from langchain.llms.huggingface_pipeline import HuggingFacePipeline
+from langchain.llms.human import HumanInputLLM
 from langchain.llms.llamacpp import LlamaCpp
 from langchain.llms.modal import Modal
 from langchain.llms.nlpcloud import NLPCloud
 from langchain.llms.openai import AzureOpenAI, OpenAI, OpenAIChat
 from langchain.llms.petals import Petals
+from langchain.llms.pipelineai import PipelineAI
+from langchain.llms.predictionguard import PredictionGuard
 from langchain.llms.promptlayer_openai import PromptLayerOpenAI, PromptLayerOpenAIChat
 from langchain.llms.replicate import Replicate
 from langchain.llms.rwkv import RWKV
@@ -37,6 +41,7 @@ __all__ = [
     "Cohere",
     "DeepInfra",
     "ForefrontAI",
+    "GooglePalm",
     "GooseAI",
     "GPT4All",
     "LlamaCpp",
@@ -45,6 +50,7 @@ __all__ = [
     "OpenAI",
     "OpenAIChat",
     "Petals",
+    "PipelineAI",
     "HuggingFaceEndpoint",
     "HuggingFaceHub",
     "SagemakerEndpoint",
@@ -59,6 +65,8 @@ __all__ = [
     "StochasticAI",
     "Writer",
     "RWKV",
+    "PredictionGuard",
+    "HumanInputLLM",
 ]
 
 type_to_cls_dict: Dict[str, Type[BaseLLM]] = {
@@ -70,6 +78,7 @@ type_to_cls_dict: Dict[str, Type[BaseLLM]] = {
     "cohere": Cohere,
     "deepinfra": DeepInfra,
     "forefrontai": ForefrontAI,
+    "google_palm": GooglePalm,
     "gooseai": GooseAI,
     "gpt4all": GPT4All,
     "huggingface_hub": HuggingFaceHub,
@@ -78,8 +87,10 @@ type_to_cls_dict: Dict[str, Type[BaseLLM]] = {
     "modal": Modal,
     "sagemaker_endpoint": SagemakerEndpoint,
     "nlpcloud": NLPCloud,
+    "human-input": HumanInputLLM,
     "openai": OpenAI,
     "petals": Petals,
+    "pipelineai": PipelineAI,
     "huggingface_pipeline": HuggingFacePipeline,
     "azure": AzureOpenAI,
     "replicate": Replicate,
