@@ -23,10 +23,4 @@ class GitHubAction(BaseTool):
     name: str = ""
     description: str = ""
 
-    def _run(
-        self,
-        instructions: str,
-        run_manager: Optional[CallbackManagerForToolRun] = None,
-    ) -> str:
-        """Use the GitHub API to run an operation."""
         return self.api_wrapper.run(self.mode, instructions)
