@@ -1,7 +1,7 @@
 """Integration test for Github Wrapper."""
 import pytest
 
-from langchain.utilities.github import GitHubAPIWrapper
+from langchain.utilities.github import GitHubAPIWrapper, get_open_issues
 
 # Make sure you have set the following env variables:
 # GITHUB_REPOSITORY
@@ -17,5 +17,5 @@ def api_client() -> GitHubAPIWrapper:
 
 def test_get_open_issues(api_client: GitHubAPIWrapper) -> None:
     """Basic test to fetch issues"""
-    issues = api_client.get_issues()
+    issues = api_client.get_open_issues()
     assert len(issues) != 0
