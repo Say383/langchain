@@ -29,4 +29,43 @@ class GitHubAction(BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the GitHub API to run an operation."""
+        try:
+            return self.api_wrapper.run(self.mode, instructions)
+        except Exception as e:
+            # Handle the exception and log the error
+            print(f"Error occurred: {e}")
+            return ""
+
+from langchain.callbacks.manager import CallbackManagerForToolRun
+from langchain.pydantic_v1 import Field
+from langchain.tools.base import BaseTool
+from langchain.utilities.github import GitHubAPIWrapper
+
+
+class GitHubAction(BaseTool):
+    """Tool for interacting with the GitHub API."""
+
+    api_wrapper: GitHubAPIWrapper = Field(default_factory=GitHubAPIWrapper)
+    mode: str
+    name: str = ""
+    description: str = ""
+
+    def _run(
+        self,
+        instructions: str,
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+    ) -> str:
+        """Use the GitHub API to run an operation."""
         return self.api_wrapper.run(self.mode, instructions)
+    def _run(
+        self,
+        instructions: str,
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+    ) -> str:
+        """Use the GitHub API to run an operation."""
+        try:
+            return self.api_wrapper.run(self.mode, instructions)
+        except Exception as e:
+            # Handle the exception and log the error
+            print(f"Error occurred: {e}")
+            return ""
