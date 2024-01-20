@@ -11,11 +11,11 @@ from langchain.utilities.github import GitHubAPIWrapper
 
 
 @pytest.fixture
-def api_client() -> GitHubAPIWrapper:
+def api_client(mocker) -> GitHubAPIWrapper:
     return GitHubAPIWrapper()
 
 
-def test_get_open_issues(api_client: GitHubAPIWrapper) -> None:
+def test_get_open_issues(api_client: GitHubAPIWrapper, mocker):
     """Basic test to fetch issues"""
     issues = api_client.get_issues()
     assert len(issues) != 0
