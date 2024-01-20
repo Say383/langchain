@@ -26,6 +26,7 @@ concurrency:
 env:
   POETRY_VERSION: "1.5.1"
   WORKDIR: "libs/langchain"
+  EXTENDED_TESTING: "extended_testing"
 
 jobs:
   lint:
@@ -70,6 +71,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           poetry-version: ${{ env.POETRY_VERSION }}
+          extra-args: -E extended_testing
           working-directory: libs/langchain
           cache-key: extended
 
