@@ -7,6 +7,9 @@ To use this tool, you must first set as environment variables:
     GITHUB_REPOSITORY -> format: {owner}/{repo}
 
 """
+import logging
+import os
+
 from typing import Optional
 
 from langchain.callbacks.manager import CallbackManagerForToolRun
@@ -23,10 +26,22 @@ class GitHubAction(BaseTool):
     name: str = ""
     description: str = ""
 
-    def _run(
+    def _run_with_error_handling(
         self,
         instructions: str,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the GitHub API to run an operation."""
-        return self.api_wrapper.run(self.mode, instructions)
+        import logging
+        import os
+
+        try:
+            # Ensure necessary environment variables are set
+            if "GITHUB_API_TOKEN" not in os.environ or "GITHUB_REPOSITORY" not in os.environ:
+                raise Exception("Environment variables GITHUB_API_TOKEN and GITHUB_REPOSITORY are missing")
+            # Use the GitHub API to run an operation
+            return self.api_wrapper.run(self.mode, instructions)
+        except Exception as e:
+            # Log any errors or exceptions
+            logging.error(f"An error occurred during the GitHub API call: {e}")
+            raise
