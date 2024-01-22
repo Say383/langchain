@@ -29,4 +29,12 @@ class GitHubAction(BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the GitHub API to run an operation."""
-        return self.api_wrapper.run(self.mode, instructions)
+        try:
+            result = self.api_wrapper.run(self.mode, instructions)
+            return result
+        except Exception as e:
+            if run_manager:
+                run_manager.log_error(str(e))
+            else:
+                print(f'Error: {str(e)}')
+            return str(e)
