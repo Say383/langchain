@@ -12,14 +12,16 @@ if TYPE_CHECKING:
 
 
 class GitHubAPIWrapper(BaseModel):
+
+  def __init__(self, github_app_id: str, github_app_private_key: str):
     """Wrapper for GitHub API."""
 
     github: Any  #: :meta private:
     github_repo_instance: Any  #: :meta private:
-    github_repository: Optional[str] = None
-    github_app_id: Optional[str] = None
-    github_app_private_key: Optional[str] = None
-    github_branch: Optional[str] = None
+    github_repository: str
+    github_app_id: str
+    github_app_private_key: str
+    github_branch: Optional[str]
     github_base_branch: Optional[str] = None
 
     class Config:
@@ -295,22 +297,43 @@ class GitHubAPIWrapper(BaseModel):
         except Exception as e:
             return "Unable to delete file due to error:\n" + str(e)
 
-    def run(self, mode: str, query: str) -> str:
+  def _handle_api_request(self, mode: str, query: str) -> str:
+        try:
+            if mode == 'get_issues':
+                return self.get_issues()
+            elif mode == 'get_issue':
+                return json.dumps(self.get_issue(int(query)))
+            elif mode == 'comment_on_issue':
+                return self.comment_on_issue(query)
+            elif mode == 'create_file':
+                return self.create_file(query)
+            elif mode == 'create_pull_request':
+                return self.create_pull_request(query)
+            elif mode == 'read_file':
+                return self.read_file(query)
+            elif mode == 'update_file':
+                return self.update_file(query)
+            elif mode == 'delete_file':
+                return self.delete_file(query)
+            else:
+                raise ValueError('Invalid mode' + mode)
+        except Exception as e:
+            return 'API request failed: ' + str(e)
         if mode == "get_issues":
-            return self.get_issues()
+            return self._handle_api_request('get_issues', None)
         elif mode == "get_issue":
-            return json.dumps(self.get_issue(int(query)))
+            return self._handle_api_request('get_issue', query)
         elif mode == "comment_on_issue":
-            return self.comment_on_issue(query)
+            return self._handle_api_request('comment_on_issue', query)
         elif mode == "create_file":
-            return self.create_file(query)
+            return self._handle_api_request('create_file', query)
         elif mode == "create_pull_request":
-            return self.create_pull_request(query)
+            return self._handle_api_request('create_pull_request', query)
         elif mode == "read_file":
-            return self.read_file(query)
+            return self._handle_api_request('read_file', query)
         elif mode == "update_file":
-            return self.update_file(query)
+            return self._handle_api_request('update_file', query)
         elif mode == "delete_file":
-            return self.delete_file(query)
+            return self._handle_api_request('delete_file', query)
         else:
             raise ValueError("Invalid mode" + mode)
