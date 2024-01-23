@@ -1,6 +1,6 @@
 # flake8: noqa
 GET_ISSUES_PROMPT = """
-This tool will fetch a list of the repository's issues. It will return the title, and issue number of 5 issues. It takes no input.
+This tool fetches a list of 5 repository issues, including their titles and issue numbers. No input is required.
 """
 
 GET_ISSUE_PROMPT = """
@@ -8,25 +8,10 @@ This tool will fetch the title, body, and comment thread of a specific issue. **
 """
 
 COMMENT_ON_ISSUE_PROMPT = """
-This tool is useful when you need to comment on a GitHub issue. Simply pass in the issue number and the comment you would like to make. Please use this sparingly as we don't want to clutter the comment threads. **VERY IMPORTANT**: Your input to this tool MUST strictly follow these rules:
-
-- First you must specify the issue number as an integer
-- Then you must place two newlines
-- Then you must specify your comment
+This tool allows you to comment on a GitHub issue. Provide the issue number and your comment. Use the tool sparingly to avoid cluttering comment threads. **VERY IMPORTANT**: Your input must: 1. Specify the issue number as an integer 2. Place two newlines 3. Specify your comment
 """
 CREATE_PULL_REQUEST_PROMPT = """
-This tool is useful when you need to create a new pull request in a GitHub repository. **VERY IMPORTANT**: Your input to this tool MUST strictly follow these rules:
-
-- First you must specify the title of the pull request
-- Then you must place two newlines
-- Then you must write the body or description of the pull request
-
-To reference an issue in the body, put its issue number directly after a #.
-For example, if you would like to create a pull request called "README updates" with contents "added contributors' names, closes issue #3", you would pass in the following string:
-
-README updates
-
-added contributors' names, closes issue #3
+This tool allows you to create a new pull request in a GitHub repository. **VERY IMPORTANT**: Your input must strictly follow these rules: 1. Specify the title of the pull request 2. Place two newlines 3. Write the body or description of the pull request To reference an issue in the body, put its issue number directly after a #. For example, to create a pull request called "README updates" with contents "added contributors' names, closes issue #3", pass in the following string: README updates added contributors' names, closes issue #3
 """
 CREATE_FILE_PROMPT = """
 This tool is a wrapper for the GitHub API, useful when you need to create a file in a GitHub repository. **VERY IMPORTANT**: Your input to this tool MUST strictly follow these rules:
@@ -66,5 +51,5 @@ new contents
 """
 
 DELETE_FILE_PROMPT = """
-This tool is a wrapper for the GitHub API, useful when you need to delete a file in a GitHub repository. Simply pass in the full file path of the file you would like to delete. **IMPORTANT**: the path must not start with a slash
+This tool allows you to delete a file in a GitHub repository. Simply pass in the full file path of the file you would like to delete. **IMPORTANT**: The path must not start with a slash
 """
