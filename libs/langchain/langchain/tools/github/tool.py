@@ -12,7 +12,7 @@ from typing import Optional
 from langchain.callbacks.manager import CallbackManagerForToolRun
 from langchain.pydantic_v1 import Field
 from langchain.tools.base import BaseTool
-from langchain.utilities.github import GitHubAPIWrapper
+from langchain.utilities.github import GitHubAPIWrapper, GitHubAPIWrapper
 
 
 class GitHubAction(BaseTool):
