@@ -7,12 +7,12 @@ To use this tool, you must first set as environment variables:
     GITHUB_REPOSITORY -> format: {owner}/{repo}
 
 """
-from typing import Optional
+from langchain.pydantic_v1 import Field, Optional
 
 from langchain.callbacks.manager import CallbackManagerForToolRun
 from langchain.pydantic_v1 import Field
 from langchain.tools.base import BaseTool
-from langchain.utilities.github import GitHubAPIWrapper
+from langchain.utilities.github import GitHubAPIWrapper, GitHubAPIWrapper
 
 
 class GitHubAction(BaseTool):
@@ -29,4 +29,8 @@ class GitHubAction(BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the GitHub API to run an operation."""
-        return self.api_wrapper.run(self.mode, instructions)
+        try:
+            return self.api_wrapper.run(self.mode, instructions)
+        except Exception as e:
+            # Add code here to handle the exception and provide error messages or logging
+            return str(e)
