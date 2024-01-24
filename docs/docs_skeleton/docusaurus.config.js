@@ -180,7 +180,7 @@ const config = {
             position: "right",
           },
           {
-            to: "https://js.langchain.com/docs",
+            to: "https://correct-js-ts-docs-url.com",
             label: "JS/TS Docs",
             position: "right",
           },
