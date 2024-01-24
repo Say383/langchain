@@ -15,7 +15,7 @@ const baseDarkCodeBlockTheme = require("prism-react-renderer/themes/vsDark");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Correct Title",
-  tagline: "LangChain Python Docs",
+  tagline: "Correct Tagline",
   favicon: "img/favicon.ico",
   customFields: {
     mendableAnonKey: process.env.MENDABLE_ANON_KEY,
