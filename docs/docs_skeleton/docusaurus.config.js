@@ -150,7 +150,7 @@ const config = {
       },
       image: "img/parrot-chainlink-icon.png",
       navbar: {
-        title: "🦜️🔗 LangChain",
+        title: "Correct Title",
         items: [
           {
             to: "/docs/get_started/introduction",
