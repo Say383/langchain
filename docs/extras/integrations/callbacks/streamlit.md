@@ -46,7 +46,7 @@ thoughts and actions live in your app.
 ```python
 from langchain.llms import OpenAI
 from langchain.agents import AgentType, initialize_agent, load_tools
-from langchain.callbacks import StreamlitCallbackHandler
+from langchain.callbacks.streamlit_callback_handler import StreamlitCallbackHandler
 import streamlit as st
 
 llm = OpenAI(temperature=0, streaming=True)
