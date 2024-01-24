@@ -5,6 +5,13 @@ module.exports = {
 
   // Modify the deployment configuration
   deployment: {
+    // Add error handling and logging
+    onBroken: 'error',
+    onBuild: {
+      error: (error) => {
+        console.error('Build failed:', error)
+      }
+    },
     target: 'github-pages',
     // Add any necessary environment variables
     env: {
