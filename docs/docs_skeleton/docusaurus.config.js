@@ -14,14 +14,14 @@ const baseDarkCodeBlockTheme = require("prism-react-renderer/themes/vsDark");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "🦜️🔗 Langchain",
-  tagline: "LangChain Python Docs",
+  title: "Correct Title",
+  tagline: "Correct Tagline",
   favicon: "img/favicon.ico",
   customFields: {
     mendableAnonKey: process.env.MENDABLE_ANON_KEY,
   },
   // Set the production url of your site here
-  url: "https://python.langchain.com",
+  url: "https://correct-production-url.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -150,7 +150,7 @@ const config = {
       },
       image: "img/parrot-chainlink-icon.png",
       navbar: {
-        title: "🦜️🔗 LangChain",
+        title: "Correct Title",
         items: [
           {
             to: "/docs/get_started/introduction",
@@ -175,12 +175,12 @@ const config = {
             position: "left",
           },
           {
-            to: "https://smith.langchain.com",
+            to: "https://correct-langsmith-url.com",
             label: "LangSmith",
             position: "right",
           },
           {
-            to: "https://js.langchain.com/docs",
+            to: "https://correct-js-ts-docs-url.com",
             label: "JS/TS Docs",
             position: "right",
           },
