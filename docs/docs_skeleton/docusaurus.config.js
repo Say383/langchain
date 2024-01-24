@@ -14,7 +14,7 @@ const baseDarkCodeBlockTheme = require("prism-react-renderer/themes/vsDark");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "🦜️🔗 Langchain",
+  title: "Correct Title",
   tagline: "LangChain Python Docs",
   favicon: "img/favicon.ico",
   customFields: {
