@@ -175,7 +175,7 @@ const config = {
             position: "left",
           },
           {
-            to: "https://smith.langchain.com",
+            to: "https://correct-langsmith-url.com",
             label: "LangSmith",
             position: "right",
           },
