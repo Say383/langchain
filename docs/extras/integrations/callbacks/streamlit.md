@@ -63,7 +63,7 @@ if prompt := st.chat_input():
         st.write(response)
 ```
 
-**Note:** You will need to set `OPENAI_API_KEY` for the above app code to run successfully.
+**Note:** Ensure to set `OPENAI_API_KEY` in the environment for the above app code to run successfully. You can use [Streamlit secrets.toml](https://docs.streamlit.io/library/advanced-features/secrets-management), or any other local ENV management tool.
 The easiest way to do this is via [Streamlit secrets.toml](https://docs.streamlit.io/library/advanced-features/secrets-management),
 or any other local ENV management tool.
 
