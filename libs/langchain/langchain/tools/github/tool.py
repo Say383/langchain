@@ -11,6 +11,7 @@ from typing import Optional
 
 from langchain.callbacks.manager import CallbackManagerForToolRun
 from langchain.pydantic_v1 import Field
+from langchain.pydantic_v1 import Field
 import logging
 import traceback
 from langchain.tools.base import BaseTool, ToolRunFailed
