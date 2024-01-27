@@ -1,5 +1,5 @@
 """
-This tool allows agents to interact with the pygithub library
+This tool allows agents to interact with the pygithub library and operate on a GitHub repository.\n\nTo use this tool, you must first set as environment variables:\n    GITHUB_API_TOKEN\n    GITHUB_REPOSITORY -> format: {owner}/{repo}
 and operate on a GitHub repository.
 
 To use this tool, you must first set as environment variables:
