@@ -22,7 +22,7 @@ class GitHubAction(BaseTool):
     """Tool for interacting with the GitHub API."""
 
     api_wrapper: GitHubAPIWrapper = Field(default_factory=GitHubAPIWrapper)
-    mode: str
+    
     name: str = "GitHubAction"
     description: str = "Provides an interface for interacting with the GitHub API."
 
@@ -33,7 +33,7 @@ class GitHubAction(BaseTool):
     ) -> str:
         """Use the GitHub API to run an operation."""
         try:
-            return self.api_wrapper.run(self.mode, instructions)
+            return self.api_wrapper.run(instructions)
         except Exception as e:
             logging.error(f'An error occurred while running the API: {e}')
             logging.error(traceback.format_exc())
