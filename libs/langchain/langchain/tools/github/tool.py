@@ -21,7 +21,7 @@ from langchain.utilities.github import GitHubAPIWrapper
 class GitHubAction(BaseTool):
     """Tool for interacting with the GitHub API."""
 
-    api_wrapper: GitHubAPIWrapper = Field(default_factory=GitHubAPIWrapper)
+    api_wrapper: GitHubAPIWrapper = Field()
     
     name: str = "GitHubAction"
     description: str = "Provides an interface for interacting with the GitHub API."
