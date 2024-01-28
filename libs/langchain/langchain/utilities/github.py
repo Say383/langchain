@@ -181,6 +181,9 @@ class GitHubAPIWrapper(BaseModel):
                 )
                 return f"Successfully created PR number {pr.number}"
             except Exception as e:
+            error_msg = f'Error occurred during pull request creation: {e}'
+            print(error_msg)
+            return error_msg
                 return "Unable to make pull request due to error:\n" + str(e)
 
     def comment_on_issue(self, comment_query: str) -> str:
