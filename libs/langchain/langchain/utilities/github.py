@@ -334,7 +334,9 @@ class GitHubAPIWrapper(BaseModel):
             )
             return "Deleted file " + file_path
         except Exception as e:
-            return "Unable to delete file due to error:\n" + str(e)
+            error_msg = f'Error occurred during file deletion: {e}'
+            print(error_msg)
+            return error_msg
 
     def run(self, mode: str, query: str) -> str:
         if mode == "get_issues":
