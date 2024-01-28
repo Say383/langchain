@@ -132,8 +132,11 @@ class GitHubAPIWrapper(BaseModel):
         Parameters:
             issue_number(int): The number for the github issue
         Returns:
-            dict: A doctionary containing the issue's title,
-            body, and comments as a string
+            dict: A dictionary containing the issue's title, body, and comments as a string
+        except Exception as e:
+            error_msg = f'Error occurred during issue retrieval: {e}'
+            print(error_msg)
+            return error_msg
         """
         issue = self.github_repo_instance.get_issue(number=issue_number)
         page = 0
