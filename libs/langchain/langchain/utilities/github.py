@@ -95,6 +95,20 @@ class GitHubAPIWrapper(BaseModel):
         return parsed
 
     def get_issues(self) -> str:
+        try:
+            issues = self.github_repo_instance.get_issues(state="open")
+            if issues.totalCount > 0:
+                parsed_issues = self.parse_issues(issues)
+                parsed_issues_str = (
+                    "Found " + str(len(parsed_issues)) + " issues:\n" + str(parsed_issues)
+                )
+                return parsed_issues_str
+            else:
+                return "No open issues available"
+        except Exception as e:
+            error_msg = f'Error occurred during issue retrieval: {e}'
+            print(error_msg)
+            return error_msg
         """
         Fetches all open issues from the repo
 
