@@ -237,7 +237,10 @@ class GitHubAPIWrapper(BaseModel):
             else:
                 return f"File already exists at {file_path}. Use update_file instead"
         except Exception as e:
-            return "Unable to make file due to error:\n" + str(e)
+            error_msg = f'Error occurred during file creation: {e}'
+            print(error_msg)
+            return error_msg
+            return error_msg
 
     def read_file(self, file_path: str) -> str:
         """
