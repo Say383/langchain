@@ -95,6 +95,20 @@ class GitHubAPIWrapper(BaseModel):
         return parsed
 
     def get_issues(self) -> str:
+        try:
+            issues = self.github_repo_instance.get_issues(state="open")
+            if issues.totalCount > 0:
+                parsed_issues = self.parse_issues(issues)
+                parsed_issues_str = (
+                    "Found " + str(len(parsed_issues)) + " issues:\n" + str(parsed_issues)
+                )
+                return parsed_issues_str
+            else:
+                return "No open issues available"
+        except Exception as e:
+            error_msg = f'Error occurred during issue retrieval: {e}'
+            print(error_msg)
+            return error_msg
         """
         Fetches all open issues from the repo
 
@@ -118,8 +132,11 @@ class GitHubAPIWrapper(BaseModel):
         Parameters:
             issue_number(int): The number for the github issue
         Returns:
-            dict: A doctionary containing the issue's title,
-            body, and comments as a string
+            dict: A dictionary containing the issue's title, body, and comments as a string
+        except Exception as e:
+            error_msg = f'Error occurred during issue retrieval: {e}'
+            print(error_msg)
+            return error_msg
         """
         issue = self.github_repo_instance.get_issue(number=issue_number)
         page = 0
@@ -164,6 +181,9 @@ class GitHubAPIWrapper(BaseModel):
                 )
                 return f"Successfully created PR number {pr.number}"
             except Exception as e:
+            error_msg = f'Error occurred during pull request creation: {e}'
+            print(error_msg)
+            return error_msg
                 return "Unable to make pull request due to error:\n" + str(e)
 
     def comment_on_issue(self, comment_query: str) -> str:
@@ -181,7 +201,12 @@ class GitHubAPIWrapper(BaseModel):
         comment = comment_query[len(str(issue_number)) + 2 :]
         try:
             issue = self.github_repo_instance.get_issue(number=issue_number)
+            if issue:
             issue.create_comment(comment)
+        else:
+            error_msg = 'Failed to create comment: Issue not found'
+            print(error_msg)
+            return error_msg
             return "Commented on issue " + str(issue_number)
         except Exception as e:
             return "Unable to make comment due to error:\n" + str(e)
@@ -212,7 +237,10 @@ class GitHubAPIWrapper(BaseModel):
             else:
                 return f"File already exists at {file_path}. Use update_file instead"
         except Exception as e:
-            return "Unable to make file due to error:\n" + str(e)
+            error_msg = f'Error occurred during file creation: {e}'
+            print(error_msg)
+            return error_msg
+            return error_msg
 
     def read_file(self, file_path: str) -> str:
         """
@@ -244,7 +272,8 @@ class GitHubAPIWrapper(BaseModel):
             A success or failure message
         """
         try:
-            file_path = file_query.split("\n")[0]
+            try:
+                file_path = file_query.split("\n")[0]
             old_file_contents = (
                 file_query.split("OLD <<<<")[1].split(">>>> OLD")[0].strip()
             )
@@ -257,6 +286,12 @@ class GitHubAPIWrapper(BaseModel):
                 old_file_contents, new_file_contents
             )
 
+            except Exception as e:
+            error_msg = f'Error occurred during file content comparison: {e}'
+            print(error_msg)
+            return error_msg
+
+        try:
             if file_content == updated_file_content:
                 return (
                     "File content was not updated because old content was not found."
@@ -264,7 +299,13 @@ class GitHubAPIWrapper(BaseModel):
                     "the current file contents."
                 )
 
-            self.github_repo_instance.update_file(
+            except Exception as e:
+                error_msg = f'Error occurred during file update: {e}'
+                print(error_msg)
+                return error_msg
+
+            try:
+                self.github_repo_instance.update_file(
                 path=file_path,
                 message="Update " + file_path,
                 content=updated_file_content,
@@ -293,7 +334,9 @@ class GitHubAPIWrapper(BaseModel):
             )
             return "Deleted file " + file_path
         except Exception as e:
-            return "Unable to delete file due to error:\n" + str(e)
+            error_msg = f'Error occurred during file deletion: {e}'
+            print(error_msg)
+            return error_msg
 
     def run(self, mode: str, query: str) -> str:
         if mode == "get_issues":
