@@ -272,7 +272,8 @@ class GitHubAPIWrapper(BaseModel):
             A success or failure message
         """
         try:
-            file_path = file_query.split("\n")[0]
+            try:
+                file_path = file_query.split("\n")[0]
             old_file_contents = (
                 file_query.split("OLD <<<<")[1].split(">>>> OLD")[0].strip()
             )
@@ -285,6 +286,12 @@ class GitHubAPIWrapper(BaseModel):
                 old_file_contents, new_file_contents
             )
 
+            except Exception as e:
+            error_msg = f'Error occurred during file content comparison: {e}'
+            print(error_msg)
+            return error_msg
+
+        try:
             if file_content == updated_file_content:
                 return (
                     "File content was not updated because old content was not found."
@@ -292,7 +299,13 @@ class GitHubAPIWrapper(BaseModel):
                     "the current file contents."
                 )
 
-            self.github_repo_instance.update_file(
+            except Exception as e:
+                error_msg = f'Error occurred during file update: {e}'
+                print(error_msg)
+                return error_msg
+
+            try:
+                self.github_repo_instance.update_file(
                 path=file_path,
                 message="Update " + file_path,
                 content=updated_file_content,
