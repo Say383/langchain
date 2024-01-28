@@ -201,7 +201,12 @@ class GitHubAPIWrapper(BaseModel):
         comment = comment_query[len(str(issue_number)) + 2 :]
         try:
             issue = self.github_repo_instance.get_issue(number=issue_number)
+            if issue:
             issue.create_comment(comment)
+        else:
+            error_msg = 'Failed to create comment: Issue not found'
+            print(error_msg)
+            return error_msg
             return "Commented on issue " + str(issue_number)
         except Exception as e:
             return "Unable to make comment due to error:\n" + str(e)
