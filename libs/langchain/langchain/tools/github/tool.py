@@ -16,7 +16,7 @@ from langchain.utilities.github import GitHubAPIWrapper
 
 
 class GitHubAction(BaseTool):
-    """Tool for interacting with the GitHub API."""
+    "Tool for interacting with the GitHub API.\n\nTo use this tool, you must first set as environment variables:\n    GITHUB_API_TOKEN\n    GITHUB_REPOSITORY -> format: {owner}/{repo}\n\n"""
 
     api_wrapper: GitHubAPIWrapper = Field(default_factory=GitHubAPIWrapper)
     mode: str
@@ -29,4 +29,9 @@ class GitHubAction(BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the GitHub API to run an operation."""
-        return self.api_wrapper.run(self.mode, instructions)
+        try:
+            return self.api_wrapper.run(self.mode, instructions)
+        except Exception as e:
+            if run_manager:
+                run_manager.error(f'Error occurred during GitHub API operation: {e}')
+            return str(e)
