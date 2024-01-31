@@ -16,7 +16,7 @@ from langchain.utilities.github import GitHubAPIWrapper
 
 
 class GitHubAction(BaseTool):
-    """Tool for interacting with the GitHub API."""
+    "Tool for interacting with the GitHub API.\n\nTo use this tool, you must first set as environment variables:\n    GITHUB_API_TOKEN\n    GITHUB_REPOSITORY -> format: {owner}/{repo}\n\n"""
 
     api_wrapper: GitHubAPIWrapper = Field(default_factory=GitHubAPIWrapper)
     mode: str
